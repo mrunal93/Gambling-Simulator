@@ -7,6 +7,7 @@ stake=100
 betAmount=1
 declare -A gambler
 declare -A gamblerLuck
+
 gambling() {
 	winCash=0
 	lostCash=0
@@ -65,5 +66,15 @@ gamblerLuck() {
 	echo -e "Gambler Luckiest Day: $luckDay \nGambler UnLuckiest Day: $unLuckyDay"
 }
 
-gambling
-gamblerLuck
+monthExtend() {
+	 gambling
+         gamblerLuck
+
+	if [ $winCash -gt $lostCash ]
+	then
+		echo "Gambler should continued For next Month"
+	else
+		echo "Gambler should stop Gambling for next Month"
+	fi
+}
+monthExtend
