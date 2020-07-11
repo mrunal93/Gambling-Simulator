@@ -6,23 +6,36 @@ echo "Welcom to gambling"
 stake=100
 betAmount=1
 gambling() {
+	winCash=0
+	lostCash=0
 	percentStake=$(($stake * 50 / 100))
 	minStake=$(($stake - $percentStake))
 	maxStake=$(($stake + $percentStake))
-	win=1
-	cash=$stake
-	while (( $cash > $minStake && $cash < $maxStake ))
+	forWin=1
+	for (( day=1; day<=20; day++ ))
 	do
-		if [ $(( RANDOM%2 )) -eq $win ]
+		cash=$stake
+		while (( $cash > $minStake && $cash < $maxStake ))
+		do
+			if [ $(( RANDOM%2 )) -eq $forWin ]
+			then
+				echo "You Win"
+				cash=$(($cash + $betAmount))
+			else
+				echo "You Lose"
+				cash=$(($cash - $betAmount))
+			fi
+		done
+
+
+		if [ $cash -gt 100 ]
 		then
-			echo "You Win"
-			cash=$(($cash + $betAmount))
+			winCash=$((winCash + 50 ))
 		else
-			echo "You Lose"
-			cash=$(($cash - $betAmount))
+			lostCash=$((lostCash + 50 ))
 		fi
 	done
-	echo $cash
-}
+	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash"
+	}
 
 gambling
