@@ -1,12 +1,12 @@
-#!/bin/bash
+#!/bin/bash 
+
 
 echo "Welcom to gambling"
-#read -p "Enter the stake Amount:" stake
-#read -p "Enter the Bet Amount:" betAmount
+
 stake=100
 betAmount=1
 declare -A gambler
-
+declare -A gamblerLuck
 gambling() {
 	winCash=0
 	lostCash=0
@@ -28,17 +28,44 @@ gambling() {
 				cash=$(($cash - $betAmount))
 			fi
 		done
-		gambler[$day]=$(( $cash - $stake))
+		 gambler[$day]=$(( $stake - $cash ))
 
-		if [ $cash -gt 100 ]
-		then
-			winCash=$((winCash + 50 ))
-		else
-			lostCash=$((lostCash + 50 ))
-		fi
+	        if [ $cash -gt 100 ]
+        	then
+                	winCash=$((winCash + 50 ))
+        	else
+                	lostCash=$((lostCash + 50 ))
+        	fi
+
 	done
-	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash"
 	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]}"
+	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash"
 	}
 
+gamblerLuck() {
+	for (( lDay=2; lDay <=20; lDay++ ))
+	do
+
+		gamblerLuck[$lDay]=$(( ${gambler[$lDay]} + ${gambler[$lDay]} ))
+	done
+	luckDay=1
+	unLuckyDay=1
+	luck=${gambler[1]}
+	unLuck=${gambler[1]}
+	for ((lDay=2; lDay<=20; lDay++ ))
+	do
+		if [ ${gamblerLuck[$lDay]} -gt $luck ]
+		then
+			luck=${gamblerLuck[$lDay]}
+			luckDay=$lDay
+		elif [ ${gamblerLuck[$lDay]} -lt $unLuck ]
+		then
+			unluck=${gamblerLuck[$lDay]}
+			unLuckyDay=$lDay
+		fi
+	done
+	echo -e "Gambler Luckiest Day: $luckDay \nGambler UnLuckiest Day: $unLuckyDay"
+}
+
 gambling
+gamblerLuck
