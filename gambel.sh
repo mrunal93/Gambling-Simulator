@@ -5,6 +5,8 @@ echo "Welcom to gambling"
 #read -p "Enter the Bet Amount:" betAmount
 stake=100
 betAmount=1
+declare -A gambler
+
 gambling() {
 	winCash=0
 	lostCash=0
@@ -26,7 +28,7 @@ gambling() {
 				cash=$(($cash - $betAmount))
 			fi
 		done
-
+		gambler[$day]=$(( $cash - $stake))
 
 		if [ $cash -gt 100 ]
 		then
@@ -36,6 +38,7 @@ gambling() {
 		fi
 	done
 	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash"
+	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]}"
 	}
 
 gambling
