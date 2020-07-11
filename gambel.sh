@@ -21,10 +21,8 @@ gambling() {
 		do
 			if [ $(( RANDOM%2 )) -eq $forWin ]
 			then
-				#echo "You Win"
 				cash=$(($cash + $betAmount))
 			else
-				#echo "You Lose"
 				cash=$(($cash - $betAmount))
 			fi
 		done
