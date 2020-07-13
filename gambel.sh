@@ -3,45 +3,46 @@
 
 echo "Welcom to gambling"
 
-stake=100
-betAmount=1
+STAKE=100
+BET_AMOUNT=1
 declare -A gambler
 declare -A gamblerLuck
 gambling() {
-	winCash=0
-	lostCash=0
-	percentStake=$(($stake * 50 / 100))
-	minStake=$(($stake - $percentStake))
-	maxStake=$(($stake + $percentStake))
-	forWin=1
-	for (( day=1; day<=20; day++ ))
+	winCash=100
+	lostCash=100
+	percentStake=$(($STAKE * 50 / 100))
+	MIN_STAKE=$(($STAKE - $percentStake))
+	MAX_STAKE=$(($STAKE + $percentStake))
+	FOR_WIN=1
+	for (( day=1; day<=30; day++ ))
 	do
-		cash=$stake
-		while (( $cash > $minStake && $cash < $maxStake ))
+		cash=$STAKE
+		while (( $cash > $MIN_STAKE && $cash < $MAX_STAKE ))
 		do
-			if [ $(( RANDOM%2 )) -eq $forWin ]
+			if [ $(( RANDOM%2 )) -eq $FOR_WIN ]
 			then
-				cash=$(($cash + $betAmount))
+				cash=$(($cash + $BET_AMOUNT))
 			else
-				cash=$(($cash - $betAmount))
+				cash=$(($cash - $BET_AMOUNT))
 			fi
 		done
-		 gambler[$day]=$(( $stake - $cash ))
+		 gambler[$day]=$(( $STAKE - $cash ))
 
 	        if [ $cash -gt 100 ]
         	then
-                	winCash=$((winCash + 50 ))
+                	winCash=$((winCash + $cash ))
+			echo "FOR DAY" $day "YOU HAVE won $"$winCash
         	else
-                	lostCash=$((lostCash + 50 ))
+                	lostCash=$((lostCash + $cash ))
+			echo "FOR DAY" $day "YOU have Loss $"$lostCash
         	fi
 
 	done
-	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]}"
-	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash"
+	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]} \nTotal winning cash:$winCash \nTotal losing cash: $lostCash"
 	}
 
 gamblerLuck() {
-	for (( lDay=2; lDay <=20; lDay++ ))
+	for (( lDay=2; lDay <=30; lDay++ ))
 	do
 
 		gamblerLuck[$lDay]=$(( ${gambler[$lDay]} + ${gambler[$lDay]} ))
@@ -50,7 +51,7 @@ gamblerLuck() {
 	unLuckyDay=1
 	luck=${gambler[1]}
 	unLuck=${gambler[1]}
-	for ((lDay=2; lDay<=20; lDay++ ))
+	for ((lDay=2; lDay<=30; lDay++ ))
 	do
 		if [ ${gamblerLuck[$lDay]} -gt $luck ]
 		then
