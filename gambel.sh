@@ -1,5 +1,5 @@
 #!/bin/bash
 
 echo "Welcom to gambling "
-stake=100
-betAmount= 1
+STAKE=100
+BET_AMOUNT= 1
