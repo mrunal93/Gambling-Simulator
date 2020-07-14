@@ -7,35 +7,38 @@ STAKE=100
 BET_AMOUNT=1
 declare -A gambler
 declare -A gamblerLuck
+winCash=0
+lostCash=0
+totalAmount=0
 gambling() {
-	winCash=100
-	lostCash=100
-	percentStake=$(($STAKE * 50 / 100))
-	MIN_STAKE=$(($STAKE - $percentStake))
-	MAX_STAKE=$(($STAKE + $percentStake))
-	FOR_WIN=1
+	cash=$(($cash+$STAKE))
+	newStake=$(($cash/2))
+	minStake=$(($cash - $newStake))
+	maxStake=$(($cash + $newStake))
 	for (( day=1; day<=30; day++ ))
 	do
 		cash=$STAKE
-		while (( $cash > $MIN_STAKE && $cash < $MAX_STAKE ))
+		while [[ $cash -lt $maxStake ]] && [[ $cash -gt $minStake ]]
 		do
-			if [ $(( RANDOM%2 )) -eq $FOR_WIN ]
+			if [ $(( RANDOM%2 )) -eq 1 ]
 			then
 				cash=$(($cash + $BET_AMOUNT))
 			else
 				cash=$(($cash - $BET_AMOUNT))
 			fi
 		done
-		 gambler[$day]=$(( $STAKE - $cash ))
 
 	        if [ $cash -gt 100 ]
         	then
-                	winCash=$((winCash + $cash ))
-			echo "FOR DAY" $day "YOU HAVE won $"$winCash
-        	else
-                	lostCash=$((lostCash + $cash ))
-			echo "FOR DAY" $day "YOU have Loss $"$lostCash
-        	fi
+			winCash=$(( winCash +  $newStake ))
+			echo "FOR DAY" $day "YOU HAVE $"$winCash "Won $" $newStake
+
+
+		else
+			lostCash=$(($lostCash + $newStake ))
+                         echo "FOR DAY" $day "YOU have  $"$lostCash "Lost $" $newStake
+		fi
+		gambler[$day]=$(( $STAKE - $cash ))
 
 	done
 	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]} \nTotal winning cash:$winCash \nTotal losing cash: $lostCash"
