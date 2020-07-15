@@ -1,4 +1,4 @@
-#!/bin/bash 
+#!/bin/bash
 
 
 echo "Welcom to gambling"
@@ -35,25 +35,18 @@ gambling() {
 
 	        if [ $cash -gt $newStake ]
         	then
-			if [[ $(($cash-$newStake)) -eq $bet ]]
-			then
-				gamblerUnLuck
-				lostCash=$(( lostCash +  $newStake ))
-				echo "FOR DAY" $day "YOU HAVE $"$cash "Lost $" $newStake
-			else
-				gamblerLuck
-				winCash=$(( winCash + $newStake))
-				echo "FOR DAY" $day "You Have $ "$cash "Won $" $newStake
-			fi
-		else
 			gamblerUnLuck
-			lostCash=$(($lostCash + $newStake ))
-                         echo "FOR DAY" $day "YOU have  $"$lostCash "Lost $" $newStake
+			lostCash=$(( lostCash +  $newStake ))
+			echo "FOR DAY" $day "YOU HAVE Lost $"$lostCash
+		else
+			gamblerLuck
+			winCash=$(( winCash + $newStake))
+			echo "FOR DAY" $day "You Have Won $ "$winCash
+
 		fi
-		gambler[$day]=$(( $STAKE - $cash ))
 
 	done
-	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]} \nTotal winning cash:$winCash \nTotal losing cash: $lostCash "
+	echo -e "Total winning cash:$winCash \nTotal losing cash: $lostCash "
 }
 
 gamblerLuck() {
