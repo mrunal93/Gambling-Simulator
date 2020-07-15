@@ -13,6 +13,7 @@ winDay=0
 loseDay=0
 loseTemp=0
 cash=0
+bet=1
 
 gambling() {
 	cash=$(($cash+$STAKE))
@@ -24,7 +25,7 @@ gambling() {
 		cash=$STAKE
 		while [[ $cash -lt $maxStake ]] && [[ $cash -gt $minStake ]]
 		do
-			if [ $(( RANDOM%2 )) -eq 1 ]
+			if [ $(( RANDOM%2 )) -eq $bet ]
 			then
 				cash=$(($cash + $BET_AMOUNT))
 			else
@@ -34,7 +35,7 @@ gambling() {
 
 	        if [ $cash -gt $newStake ]
         	then
-			if [[ $(($cash-$newStake)) -eq 1 ]]
+			if [[ $(($cash-$newStake)) -eq $bet ]]
 			then
 				gamblerUnLuck
 				lostCash=$(( lostCash +  $newStake ))
