@@ -12,7 +12,7 @@ winTemp=0
 winDay=0
 loseDay=0
 loseTemp=0
-
+cash=0
 
 gambling() {
 	cash=$(($cash+$STAKE))
