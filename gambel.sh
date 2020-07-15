@@ -12,7 +12,7 @@ winTemp=0
 winDay=0
 loseDay=0
 loseTemp=0
-
+cash=0
 
 gambling() {
 	cash=$(($cash+$STAKE))
@@ -32,7 +32,7 @@ gambling() {
 			fi
 		done
 
-	        if [ $cash -gt 100 ]
+	        if [ $cash -gt $newStake ]
         	then
 			if [[ $(($cash-$newStake)) -eq 1 ]]
 			then
@@ -42,7 +42,7 @@ gambling() {
 			else
 				gamblerLuck
 				winCash=$(( winCash + $newStake))
-				echo "FOR DAY" $day "You Hvae $ "$cash "Lost $" $newStake
+				echo "FOR DAY" $day "You Have $ "$cash "Won $" $newStake
 			fi
 		else
 			gamblerUnLuck
