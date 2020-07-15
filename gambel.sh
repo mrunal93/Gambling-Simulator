@@ -6,10 +6,14 @@ echo "Welcom to gambling"
 STAKE=100
 BET_AMOUNT=1
 declare -A gambler
-declare -A gamblerLuck
 winCash=0
 lostCash=0
-totalAmount=0
+winTemp=0
+winDay=0
+loseDay=0
+loseTemp=0
+
+
 gambling() {
 	cash=$(($cash+$STAKE))
 	newStake=$(($cash/2))
@@ -30,49 +34,47 @@ gambling() {
 
 	        if [ $cash -gt 100 ]
         	then
-			winCash=$(( winCash +  $newStake ))
-			echo "FOR DAY" $day "YOU HAVE $"$winCash "Won $" $newStake
-
-
+			if [[ $(($cash-$newStake)) -eq 1 ]]
+			then
+				gamblerUnLuck
+				lostCash=$(( lostCash +  $newStake ))
+				echo "FOR DAY" $day "YOU HAVE $"$cash "Lost $" $newStake
+			else
+				gamblerLuck
+				winCash=$(( winCash + $newStake))
+				echo "FOR DAY" $day "You Hvae $ "$cash "Lost $" $newStake
+			fi
 		else
+			gamblerUnLuck
 			lostCash=$(($lostCash + $newStake ))
                          echo "FOR DAY" $day "YOU have  $"$lostCash "Lost $" $newStake
 		fi
 		gambler[$day]=$(( $STAKE - $cash ))
 
 	done
-	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]} \nTotal winning cash:$winCash \nTotal losing cash: $lostCash"
-	}
+	echo -e "Days won and lost: ${!gambler[@]} \nBy the Amount: ${gambler[@]} \nTotal winning cash:$winCash \nTotal losing cash: $lostCash "
+}
 
 gamblerLuck() {
-	for (( lDay=2; lDay <=30; lDay++ ))
-	do
+	if [[ $loseTemp -lt $newStake ]]
+	then
+		loseTemp=$(($newStake))
+		loseDay=$(($day))
+	fi
+}
 
-		gamblerLuck[$lDay]=$(( ${gambler[$lDay]} + ${gambler[$lDay]} ))
-	done
-	luckDay=1
-	unLuckyDay=1
-	luck=${gambler[1]}
-	unLuck=${gambler[1]}
-	for ((lDay=2; lDay<=30; lDay++ ))
-	do
-		if [ ${gamblerLuck[$lDay]} -gt $luck ]
-		then
-			luck=${gamblerLuck[$lDay]}
-			luckDay=$lDay
-		elif [ ${gamblerLuck[$lDay]} -lt $unLuck ]
-		then
-			unluck=${gamblerLuck[$lDay]}
-			unLuckyDay=$lDay
-		fi
-	done
-	echo -e "Gambler Luckiest Day: $luckDay \nGambler UnLuckiest Day: $unLuckyDay"
+gamblerUnLuck() {
+	if [[ $winTemp -lt $newStake ]]
+	then
+		winTemp=$(($newStake))
+		winDay=$(($day))
+	fi
 }
 
 monthExtend() {
-	 gambling
-         gamblerLuck
-
+	gambling
+        gamblerLuck
+	echo -e "Your Unluckiest day is $loseDay you lost $loseTemp \nYour luckiest day is $winDay you won $winTemp"
 	if [ $winCash -gt $lostCash ]
 	then
 		echo "Gambler should continued For next Month"
