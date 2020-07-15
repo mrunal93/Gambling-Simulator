@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 echo "Welcom to gambling"
 
 STAKE=100
